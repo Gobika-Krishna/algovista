@@ -1,5 +1,35 @@
-header {
-    background: #1976d2;
-    color: white;
-    padding: 16px;
+.navbar {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 64px;
+
+}
+
+.logo-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+.logo {
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    letter-spacing: .5px;
+
+}
+
+.spacer {
+
+    flex: 1;
+
 }

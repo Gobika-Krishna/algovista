@@ -1,6 +1,17 @@
 footer {
+
+    height: 56px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
     background: #222;
+
     color: white;
-    padding: 12px;
-    text-align: center;
+
+    font-size: 14px;
+
 }
