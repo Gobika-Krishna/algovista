@@ -26,6 +26,13 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/queue/queue').then((m) => m.Queue),
             },
+            {
+                path: 'linked-list',
+                loadComponent: () =>
+                    import('./features/linked-list/linked-list').then(
+                        (m) => m.LinkedList
+                    ),
+            }
         ],
     },
 ];

@@ -1,0 +1,205 @@
+<div class="linked-list-page">
+
+    <!-- Header -->
+    <div class="page-header">
+
+        <div>
+            <h1>Linked List</h1>
+            <p>Singly Linked List Visualization</p>
+        </div>
+
+        <div class="list-info">
+            <span>Size : {{ size() }}</span>
+            <span>Head : {{ head() }}</span>
+            <span>Tail : {{ tail() }}</span>
+        </div>
+
+    </div>
+
+    <!-- Controls -->
+
+    <div class="controls">
+
+        <mat-form-field appearance="outline">
+
+            <mat-label>Value</mat-label>
+
+            <input matInput type="number" [(ngModel)]="value" (keyup.enter)="insertTail()">
+
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="insertHead()">
+
+            Insert Head
+
+        </button>
+
+        <button mat-raised-button color="primary" (click)="insertTail()">
+
+            Insert Tail
+
+        </button>
+
+        <button mat-raised-button (click)="deleteHead()" [disabled]="size()===0">
+
+            Delete Head
+
+        </button>
+
+        <button mat-raised-button (click)="deleteTail()" [disabled]="size()===0">
+
+            Delete Tail
+
+        </button>
+
+        <button mat-raised-button color="warn" (click)="reset()">
+
+            Reset
+
+        </button>
+
+    </div>
+
+    <!-- Workspace -->
+
+    <div class="workspace">
+
+        <!-- Visualization -->
+
+        <section class="visualizer">
+
+            <div class="head-label">
+
+                HEAD
+
+            </div>
+
+            <div class="linked-list-container">
+
+                @if(nodes().length){
+
+                @for(node of nodes(); track node.id){
+
+                <div class="node-wrapper">
+
+                    <div class="node">
+
+                        {{node.value}}
+
+                    </div>
+
+                    @if(!$last){
+
+                    <div class="arrow">
+
+                        →
+
+                    </div>
+
+                    } @else {
+
+                    <div class="null-node">
+
+                        NULL
+
+                    </div>
+
+                    }
+
+                </div>
+
+                }
+
+                } @else {
+
+                <div class="empty-list">
+
+                    Empty Linked List
+
+                </div>
+
+                }
+
+            </div>
+
+        </section>
+
+        <!-- Side -->
+
+        <aside class="side-panel">
+
+            <div class="panel">
+
+                <h3>History</h3>
+
+                @if(history().length){
+
+                @for(item of history(); track $index){
+
+                <div class="history-item">
+
+                    {{item}}
+
+                </div>
+
+                }
+
+                } @else {
+
+                <p>No Operations</p>
+
+                }
+
+            </div>
+
+            <div class="panel">
+
+                <h3>Complexity</h3>
+
+                <div class="complexity">
+
+                    <span>Insert Head</span>
+
+                    <strong>O(1)</strong>
+
+                </div>
+
+                <div class="complexity">
+
+                    <span>Insert Tail</span>
+
+                    <strong>O(n)</strong>
+
+                </div>
+
+                <div class="complexity">
+
+                    <span>Delete Head</span>
+
+                    <strong>O(1)</strong>
+
+                </div>
+
+                <div class="complexity">
+
+                    <span>Delete Tail</span>
+
+                    <strong>O(n)</strong>
+
+                </div>
+
+                <div class="complexity">
+
+                    <span>Search</span>
+
+                    <strong>O(n)</strong>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>

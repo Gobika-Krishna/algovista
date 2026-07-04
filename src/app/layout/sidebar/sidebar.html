@@ -1,9 +1,7 @@
 <div class="sidebar">
 
     <div class="title">
-
         AlgoVista
-
     </div>
 
     <mat-divider></mat-divider>
@@ -11,85 +9,132 @@
     <mat-nav-list>
 
         <a mat-list-item routerLink="/home" routerLinkActive="active-link">
-
             <mat-icon matListItemIcon>dashboard</mat-icon>
-
             <span matListItemTitle>Dashboard</span>
-
         </a>
 
     </mat-nav-list>
 
-    <mat-divider></mat-divider>
-
     <div class="section-title">
-
         Data Structures
-
     </div>
 
     <mat-nav-list>
 
         <a mat-list-item routerLink="/stack" routerLinkActive="active-link">
-
             <mat-icon matListItemIcon>layers</mat-icon>
-
             <span matListItemTitle>Stack</span>
-
         </a>
 
         <a mat-list-item routerLink="/queue" routerLinkActive="active-link">
-
             <mat-icon matListItemIcon>view_stream</mat-icon>
-
             <span matListItemTitle>Queue</span>
-
         </a>
 
-        <a mat-list-item>
-
+        <a mat-list-item routerLink="/linked-list" routerLinkActive="active-link">
             <mat-icon matListItemIcon>share</mat-icon>
-
             <span matListItemTitle>Linked List</span>
-
         </a>
 
     </mat-nav-list>
 
-    <mat-divider></mat-divider>
+    <!-- Trees -->
 
-    <div class="section-title">
+    <mat-expansion-panel #treePanel class="sidebar-panel" hideToggle>
 
-        Algorithms
+        <mat-expansion-panel-header>
 
-    </div>
+            <mat-panel-title>
 
-    <mat-nav-list>
+                <mat-icon>account_tree</mat-icon>
 
-        <a mat-list-item>
+                <span class="panel-title">Trees</span>
 
-            <mat-icon matListItemIcon>sort</mat-icon>
+            </mat-panel-title>
 
-            <span matListItemTitle>Sorting</span>
+            <mat-icon>
+                {{ treePanel.expanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
 
-        </a>
+        </mat-expansion-panel-header>
 
-        <a mat-list-item>
+        <mat-nav-list>
 
-            <mat-icon matListItemIcon>account_tree</mat-icon>
+            <a mat-list-item routerLink="/trees/binary-tree" routerLinkActive="active-link">
+                Binary Tree
+            </a>
 
-            <span matListItemTitle>Tree</span>
+            <a mat-list-item routerLink="/trees/binary-search-tree" routerLinkActive="active-link">
+                Binary Search Tree
+            </a>
 
-        </a>
+            <a mat-list-item routerLink="/trees/avl-tree" routerLinkActive="active-link">
+                AVL Tree
+            </a>
 
-        <a mat-list-item>
+            <a mat-list-item routerLink="/trees/heap" routerLinkActive="active-link">
+                Heap
+            </a>
 
-            <mat-icon matListItemIcon>hub</mat-icon>
+        </mat-nav-list>
 
-            <span matListItemTitle>Graph</span>
+    </mat-expansion-panel>
 
-        </a>
+    <!-- Graphs -->
 
-    </mat-nav-list>
+    <mat-expansion-panel #graphPanel class="sidebar-panel" hideToggle>
+
+        <mat-expansion-panel-header>
+
+            <mat-panel-title>
+
+                <mat-icon>hub</mat-icon>
+
+                <span class="panel-title">Graphs</span>
+
+            </mat-panel-title>
+
+            <mat-icon>
+                {{ graphPanel.expanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+
+        </mat-expansion-panel-header>
+
+        <mat-nav-list>
+
+            <a mat-list-item routerLink="/graphs/bfs" routerLinkActive="active-link">
+
+                Breadth First Search
+
+            </a>
+
+            <a mat-list-item routerLink="/graphs/dfs" routerLinkActive="active-link">
+
+                Depth First Search
+
+            </a>
+
+            <a mat-list-item routerLink="/graphs/dijkstra" routerLinkActive="active-link">
+
+                Dijkstra
+
+            </a>
+
+            <a mat-list-item routerLink="/graphs/prims" routerLinkActive="active-link">
+
+                Prim's Algorithm
+
+            </a>
+
+            <a mat-list-item routerLink="/graphs/kruskals" routerLinkActive="active-link">
+
+                Kruskal's Algorithm
+
+            </a>
+
+        </mat-nav-list>
+
+    </mat-expansion-panel>
+
 
 </div>

@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-
+import { MatExpansionModule } from '@angular/material/expansion';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -14,6 +14,7 @@ import { MatListModule } from '@angular/material/list';
     MatListModule,
     MatIconModule,
     MatDividerModule,
+    MatExpansionModule
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
