@@ -1,0 +1,158 @@
+<div class="queue-page">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div>
+            <h1>Queue (FIFO)</h1>
+            <p>First In First Out Data Structure</p>
+        </div>
+
+        <div class="queue-info">
+            <span>Size : {{ size() }}</span>
+            <span>Front : {{ front() ?? '-' }}</span>
+            <span>Rear : {{ rear() ?? '-' }}</span>
+        </div>
+
+    </div>
+
+    <!-- Controls -->
+
+    <div class="controls">
+
+        <mat-form-field appearance="outline">
+            <mat-label>Enter Value</mat-label>
+
+            <input matInput type="number" [(ngModel)]="value" (keyup.enter)="enqueue()">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="enqueue()" [disabled]="isFull()">
+
+            Enqueue
+
+        </button>
+
+        <button mat-raised-button (click)="dequeue()" [disabled]="isEmpty()">
+
+            Dequeue
+
+        </button>
+
+        <button mat-raised-button (click)="peekFront()" [disabled]="isEmpty()">
+
+            Front
+
+        </button>
+
+        <button mat-raised-button (click)="peekRear()" [disabled]="isEmpty()">
+
+            Rear
+
+        </button>
+
+        <button mat-raised-button color="warn" (click)="reset()">
+
+            Reset
+
+        </button>
+
+    </div>
+
+    <!-- Workspace -->
+
+    <div class="workspace">
+
+        <!-- Queue -->
+
+        <section class="visualizer">
+
+            <div class="queue-labels">
+
+                <span>FRONT</span>
+
+                <span>REAR</span>
+
+            </div>
+
+            <div class="queue-box">
+
+                @for(item of queue(); track $index){
+
+                <div class="queue-item">
+
+                    {{item}}
+
+                </div>
+
+                }
+
+                @for(slot of [].constructor(CAPACITY - size()); track $index){
+
+                <div class="queue-slot"></div>
+
+                }
+
+            </div>
+
+        </section>
+
+        <!-- Side Panel -->
+
+        <aside class="side-panel">
+
+            <div class="panel">
+
+                <h3>History</h3>
+
+                @if(history().length){
+
+                @for(item of history(); track $index){
+
+                <div class="history-item">
+
+                    {{item}}
+
+                </div>
+
+                }
+
+                } @else {
+
+                <p>No Operations</p>
+
+                }
+
+            </div>
+
+            <div class="panel">
+
+                <h3>Complexity</h3>
+
+                <div class="complexity">
+                    <span>Enqueue</span>
+                    <strong>O(1)</strong>
+                </div>
+
+                <div class="complexity">
+                    <span>Dequeue</span>
+                    <strong>O(1)</strong>
+                </div>
+
+                <div class="complexity">
+                    <span>Front</span>
+                    <strong>O(1)</strong>
+                </div>
+
+                <div class="complexity">
+                    <span>Rear</span>
+                    <strong>O(1)</strong>
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>

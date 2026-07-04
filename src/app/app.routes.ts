@@ -21,6 +21,11 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/stack/stack').then((m) => m.Stack),
             },
+            {
+                path: 'queue',
+                loadComponent: () =>
+                    import('./features/queue/queue').then((m) => m.Queue),
+            },
         ],
     },
 ];
