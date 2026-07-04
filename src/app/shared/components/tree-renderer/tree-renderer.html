@@ -1,0 +1,30 @@
+<div class="tree-canvas">
+
+    <svg class="tree-svg">
+
+        @for(item of nodes; track item.node.value){
+
+        @if(item.parent){
+
+        <line [attr.x1]="item.parent.x" [attr.y1]="item.parent.y" [attr.x2]="item.x" [attr.y2]="item.y"
+            class="tree-line">
+
+        </line>
+
+        }
+
+        }
+
+    </svg>
+
+    @for(item of nodes; track item.node.value){
+
+    <div class="tree-node" [style.left.px]="item.x" [style.top.px]="item.y">
+
+        {{item.node.value}}
+
+    </div>
+
+    }
+
+</div>

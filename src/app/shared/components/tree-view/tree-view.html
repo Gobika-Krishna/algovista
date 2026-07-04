@@ -1,0 +1,55 @@
+@if(root){
+
+<div class="tree">
+
+    <div class="node-wrapper">
+
+        <div class="tree-node">
+
+            {{root.value}}
+
+        </div>
+
+    </div>
+
+    @if(root.left || root.right){
+
+    <div class="connector">
+
+        <div class="left-line"></div>
+
+        <div class="right-line"></div>
+
+    </div>
+
+    <div class="children">
+
+        <div class="child">
+
+            @if(root.left){
+
+            <app-tree-view [root]="root.left" [depth]="depth+1">
+            </app-tree-view>
+
+            }
+
+        </div>
+
+        <div class="child">
+
+            @if(root.right){
+
+            <app-tree-view [root]="root.right" [depth]="depth+1">
+            </app-tree-view>
+
+            }
+
+        </div>
+
+    </div>
+
+    }
+
+</div>
+
+}

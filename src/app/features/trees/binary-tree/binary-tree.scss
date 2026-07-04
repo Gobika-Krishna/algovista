@@ -1,0 +1,222 @@
+.tree-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: #94a3b8;
+  }
+}
+
+.tree-info {
+  display: flex;
+  gap: 12px;
+
+  span {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  mat-form-field {
+    width: 220px;
+  }
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+.visualizer{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:40px;
+
+    min-height:600px;
+
+    overflow:auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+}
+
+.tree {
+
+  width: 100%;
+
+}
+
+.level {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 80px;
+
+  margin: 30px 0;
+
+}
+
+.tree-node {
+
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+  );
+
+  color: white;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+  transition: .25s;
+
+}
+
+.tree-node:hover {
+
+  transform: scale(1.08);
+
+}
+
+.empty-tree {
+
+  color: #94a3b8;
+
+  font-size: 22px;
+
+}
+
+.side-panel {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+}
+
+.panel {
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  padding: 20px;
+
+}
+
+.panel h3 {
+
+  margin-top: 0;
+
+  margin-bottom: 16px;
+
+}
+
+.history-item {
+
+  padding: 10px 0;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+
+}
+
+.complexity {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 10px 0;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+
+}
+
+@media (max-width:1100px){
+
+  .workspace{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
+@media (max-width:768px){
+
+  .controls{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+  }
+
+  .controls mat-form-field{
+
+    width:100%;
+
+  }
+
+  .level{
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+  }
+
+}

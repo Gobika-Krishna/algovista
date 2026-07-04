@@ -32,6 +32,18 @@ export const routes: Routes = [
                     import('./features/linked-list/linked-list').then(
                         (m) => m.LinkedList
                     ),
+            },
+            {
+                path: 'trees/binary-tree',
+                loadComponent: () =>
+                    import('./features/trees/binary-tree/binary-tree')
+                        .then(m => m.BinaryTree)
+            },
+            {
+                path: 'trees/binary-search-tree',
+                loadComponent: () =>
+                    import('./features/trees/binary-search-tree/binary-search-tree')
+                        .then(m => m.BinarySearchTree)
             }
         ],
     },

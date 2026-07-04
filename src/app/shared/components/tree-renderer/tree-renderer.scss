@@ -1,0 +1,69 @@
+.tree-canvas{
+
+    position:relative;
+
+    width:1400px;
+
+    height:700px;
+
+}
+.tree-svg{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    overflow:visible;
+
+}
+
+.tree-line{
+
+    stroke:#94a3b8;
+
+    stroke-width:3;
+
+    stroke-linecap:round;
+
+}
+.tree-node{
+
+    position:absolute;
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    transform:translate(-50%,-50%);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+    transition:.3s;
+
+}
+
+.tree-node:hover{
+
+    transform:translate(-50%,-50%) scale(1.08);
+
+}
