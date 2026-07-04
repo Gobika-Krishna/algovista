@@ -1,1 +1,111 @@
-<p>stack works!</p>
+<div class="stack-page">
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <h1>Stack Visualizer</h1>
+            <p>Last In First Out (LIFO)</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <span>Size</span>
+                <strong>{{ size() }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>Top</span>
+                <strong>{{ top() ?? '-' }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+
+    <div class="controls">
+        <mat-form-field appearance="outline">
+            <mat-label>Value</mat-label>
+
+            <input matInput type="number" [(ngModel)]="value" (keyup.enter)="push()" />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="push()">Push</button>
+
+        <button mat-raised-button (click)="pop()" [disabled]="!size()">Pop</button>
+
+        <button mat-raised-button (click)="peek()" [disabled]="!size()">Peek</button>
+
+        <button mat-raised-button color="warn" (click)="reset()" [disabled]="!size()">Reset</button>
+    </div>
+
+    <!-- Main -->
+
+    <div class="workspace">
+        <!-- History -->
+
+        <section class="panel history">
+            <h2>History</h2>
+
+            @if(history().length){ @for(item of history(); track $index){
+
+            <div class="history-item">{{item}}</div>
+
+            } }@else{
+
+            <div class="empty">No Operations</div>
+
+            }
+        </section>
+
+        <!-- Stack -->
+
+        <section class="stack-section">
+            <div class="top">
+                TOP
+
+                <div>↓</div>
+            </div>
+
+            <div class="stack-frame">
+                @for(item of stack().slice().reverse(); track $index){
+
+                <div class="stack-node">{{item}}</div>
+
+                }
+            </div>
+        </section>
+
+        <!-- Info -->
+
+        <section class="panel">
+            <h2>Information</h2>
+
+            <div class="info-row">
+                <span>Push</span>
+                <strong>O(1)</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Pop</span>
+                <strong>O(1)</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Peek</span>
+                <strong>O(1)</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Search</span>
+                <strong>O(n)</strong>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+
+    <div class="note">
+        <strong>LIFO Principle</strong>
+
+        <p>The last element pushed into the stack is always the first element removed.</p>
+    </div>
+</div>

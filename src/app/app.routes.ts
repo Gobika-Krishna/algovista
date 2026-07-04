@@ -8,8 +8,18 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
+                pathMatch: 'full',
+                redirectTo: 'home',
+            },
+            {
+                path: 'home',
                 loadComponent: () =>
-                    import('./pages/home/home').then((m) => m.Home),
+                    import('./features/home/home').then((m) => m.Home),
+            },
+            {
+                path: 'stack',
+                loadComponent: () =>
+                    import('./features/stack/stack').then((m) => m.Stack),
             },
         ],
     },
