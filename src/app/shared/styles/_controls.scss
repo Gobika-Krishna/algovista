@@ -31,3 +31,29 @@
   gap:14px;
   flex-wrap:wrap;
 }
+
+.av-chip{
+  height:40px;
+  display:inline-flex;
+  align-items: center;
+  gap:6px;
+  padding:0 16px;
+  border-radius:20px;
+  background:#172033;
+  border:1px solid rgba(255,255,255,.08);
+}
+.av-chip-primary .value{
+  color:#60a5fa;
+}
+
+.av-chip-success .value{
+  color:#22c55e;
+}
+
+.av-chip-warning .value{
+  color:#fb923c;
+}
+
+.av-chip-danger .value{
+  color:#ef4444;
+}

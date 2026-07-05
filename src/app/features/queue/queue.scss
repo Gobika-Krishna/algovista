@@ -1,13 +1,14 @@
-.queue-page {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.queue-page{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  gap:12px;
 }
 
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 
   h1 {
     margin: 0;
@@ -21,181 +22,235 @@
   }
 }
 
-.queue-info {
-  display: flex;
-  gap: 12px;
+.header-actions{
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
 
   span {
-    background: var(--surface);
-    border: 1px solid var(--border);
     color: white;
-    padding: 10px 18px;
     border-radius: 20px;
-    font-weight: 600;
+    font-weight: 400;
   }
 }
 
-.controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
+.header-actions mat-form-field{
+  margin-bottom:-1.25em;
+}
 
-  mat-form-field {
-    width: 220px;
+
+.workspace{
+  flex:1;
+  display:grid;
+  grid-template-columns:75% 25%;
+  gap:16px;
+  min-height:0;
+}
+
+.visualizer{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#111827;
+  border:1px solid #334155;
+  border-radius:16px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:24px;
+}
+
+.queue-container{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:28px;
+  padding:90px 40px;
+  min-width:max-content;
+}
+
+.queue-box{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:max-content;
+}
+
+.queue-slot{
+  width:80px;
+  height:80px;
+  border:2px dashed rgba(255,255,255,.18);
+  border-radius:14px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+.queue-card{
+  width:64px;
+  height:64px;
+  border-radius:12px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  color:#fff;
+  font-size:22px;
+  font-weight:700;
+  transition:all .35s ease;
+}
+
+.queue-card.active{
+  transform:scale(1.08);
+  box-shadow:0 0 18px rgba(59,130,246,.8);
+}
+
+.front-pointer{
+  position:absolute;
+  top:12px;
+  width:80px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:#22c55e;
+  font-weight:700;
+  transition:left .35s ease;
+}
+
+.front-pointer mat-icon{
+  width:30px;
+  height:30px;
+  font-size:30px;
+}
+
+.rear-pointer{
+  position:absolute;
+  bottom:12px;
+  width:80px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:#fb923c;
+  transition:left .35s ease;
+}
+
+.rear-pointer mat-icon{
+  width:30px;
+  height:30px;
+  font-size:30px;
+}
+
+.front-pointer span,
+.rear-pointer span{
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+.empty-state{
+  text-align:center;
+}
+
+.empty-state h2{
+  margin:0;
+  font-size:30px;
+}
+
+.empty-state p{
+  margin-top:10px;
+  color:#94a3b8;
+}
+.visualizer::-webkit-scrollbar{
+  height:10px;
+}
+
+.visualizer::-webkit-scrollbar-thumb{
+  background:#374151;
+  border-radius:10px;
+}
+
+.visualizer::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+/* ---------- Animations ---------- */
+
+.enqueue-animation{
+  animation:enqueue .45s ease;
+}
+
+.dequeue-animation{
+  animation:dequeue .35s ease forwards;
+}
+
+.peek-animation{
+  animation:peekPulse .7s ease;
+}
+
+.shake{
+  animation:shake .45s;
+}
+
+@keyframes enqueue{
+  0%{
+    opacity:0;
+    transform:translateX(60px) scale(.8);
+  }
+  100%{
+    opacity:1;
+    transform:translateX(0) scale(1);
   }
 }
 
-.workspace {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-}
-
-.visualizer {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-}
-
-.queue-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-
-  span {
-    color: #60a5fa;
-    font-weight: 700;
-    font-size: 18px;
+@keyframes dequeue{
+  0%{
+    opacity:1;
+    transform:translateX(0);
+  }
+  100%{
+    opacity:0;
+    transform:translateX(-60px);
   }
 }
 
-.queue-box {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  min-height: 120px;
-
-  border: 4px solid #2563eb;
-  border-radius: 12px;
-
-  padding: 20px;
-
-  overflow: hidden;
+@keyframes peekPulse{
+  0%,100%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.12);
+  }
 }
 
-.queue-item {
-  width: 80px;
-  height: 80px;
-
-  border-radius: 12px;
-
-  background: linear-gradient(
-      135deg,
-      #2563eb,
-      #7c3aed
-  );
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-
-  transition: .25s;
-
-  animation: enqueue .35s ease;
+@keyframes shake{
+  0%,100%{
+    transform:translateX(0);
+  }
+  20%{
+    transform:translateX(-6px);
+  }
+  40%{
+    transform:translateX(6px);
+  }
+  60%{
+    transform:translateX(-6px);
+  }
+  80%{
+    transform:translateX(6px);
+  }
 }
 
-.queue-item:hover {
-  transform: translateY(-4px);
-}
+@media(max-width:1200px){
 
-.queue-slot {
-  width: 80px;
-  height: 80px;
-
-  border-radius: 12px;
-
-  border: 2px dashed rgba(255,255,255,.15);
-}
-
-.side-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.panel h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.history-item {
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-.complexity {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-@keyframes enqueue {
-
-  from {
-
-    opacity: 0;
-
-    transform: translateX(40px);
-
+  .workspace{
+    grid-template-columns:1fr;
   }
 
-  to {
-
-    opacity: 1;
-
-    transform: translateX(0);
-
-  }
-
-}
-
-@media (max-width: 1100px) {
-
-  .workspace {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-@media (max-width: 768px) {
-
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .controls mat-form-field {
-    width: 100%;
-  }
-
-  .queue-box {
-    flex-wrap: wrap;
-    justify-content: center;
+  .visualizer{
+    min-height:450px;
   }
 
 }
