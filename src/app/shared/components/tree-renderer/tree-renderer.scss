@@ -67,3 +67,19 @@
     transform:translate(-50%,-50%) scale(1.08);
 
 }
+.highlight {
+
+  background: linear-gradient(
+      135deg,
+      #16a34a,
+      #22c55e
+  ) !important;
+
+  transform: translate(-50%, -50%) scale(1.15);
+
+  box-shadow:
+      0 0 25px rgba(34,197,94,.7);
+
+  transition: .35s;
+
+}

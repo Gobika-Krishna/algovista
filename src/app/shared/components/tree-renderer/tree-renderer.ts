@@ -21,6 +21,8 @@ export class TreeRenderer implements OnChanges {
 
   @Input({ required: true })
   root!: TreeNode | null;
+  @Input()
+  highlightValue: number | null = null;
 
   nodes: TreeLayoutNode[] = [];
 

@@ -19,9 +19,10 @@
 
     @for(item of nodes; track item.node.value){
 
-    <div class="tree-node" [style.left.px]="item.x" [style.top.px]="item.y">
+    <div class="tree-node" [class.highlight]="item.node.value === highlightValue" [style.left.px]="item.x"
+        [style.top.px]="item.y">
 
-        {{item.node.value}}
+        {{ item.node.value }}
 
     </div>
 
