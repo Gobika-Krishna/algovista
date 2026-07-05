@@ -78,7 +78,7 @@ export class Stack {
 
   code = signal<string[]>(this.algorithms.create);
 
-  createStack() {
+  async createStack() {
 
     const cells: StackCell[] = [];
 
@@ -89,14 +89,37 @@ export class Stack {
       });
     }
 
-    this.stack.set(cells);
-    this.top.set(-1);
-
     this.code.set(this.algorithms.create);
 
     this.updateExecution(
       'Create Stack',
-      'Ready',
+      'Running',
+      `O(${this.stackSize})`,
+      `O(${this.stackSize})`
+    );
+
+    await this.animation.play([
+      {
+        line: 1,
+        message: 'Allocating memory'
+      },
+      {
+        line: 2,
+        message: 'Initializing stack'
+      },
+      {
+        line: 3,
+        message: 'Setting TOP = -1',
+        callback: () => {
+          this.stack.set(cells);
+          this.top.set(-1);
+        }
+      }
+    ]);
+
+    this.updateExecution(
+      'Create Stack',
+      'Completed',
       `O(${this.stackSize})`,
       `O(${this.stackSize})`
     );
@@ -298,8 +321,6 @@ export class Stack {
 
     this.value = null;
 
-    this.code.set(this.algorithms.create);
-
     this.updateExecution(
       'Reset',
       'Stack Cleared',
@@ -308,6 +329,8 @@ export class Stack {
     );
 
     this.animation.activeLine.set(-1);
+    this.code.set(this.algorithms.create);
+
 
   }
 
