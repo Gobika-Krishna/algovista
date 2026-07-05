@@ -1,0 +1,29 @@
+<div class="code-container">
+
+    <div class="title">
+
+        Algorithm
+
+    </div>
+
+    @for(line of code; track $index){
+
+    <div class="code-line" [class.active]="$index===activeLine">
+
+        <span class="line-number">
+
+            {{$index+1}}
+
+        </span>
+
+        <span class="line-text">
+
+            {{line}}
+
+        </span>
+
+    </div>
+
+    }
+
+</div>

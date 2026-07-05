@@ -1,111 +1,135 @@
 <div class="stack-page">
-    <!-- Header -->
-    <div class="header">
-        <div>
-            <h1>Stack Visualizer</h1>
-            <p>Last In First Out (LIFO)</p>
+
+    <header class="page-header">
+
+        <div class="title-section">
+            <h1>Stack (LIFO)</h1>
+            <span>Last In First Out</span>
         </div>
 
-        <div class="stats">
-            <div class="stat-card">
-                <span>Size</span>
-                <strong>{{ size() }}</strong>
-            </div>
-
-            <div class="stat-card">
-                <span>Top</span>
-                <strong>{{ top() ?? '-' }}</strong>
-            </div>
+        <div class="stack-info">
+            <span>Capacity : {{ stack().length }}</span>
+            <span>Top : {{ top() === -1 ? '-' : top() }}</span>
+            <span>Elements : {{ size() }}</span>
         </div>
-    </div>
 
-    <!-- Controls -->
+    </header>
 
-    <div class="controls">
+    <section class="controls">
+
         <mat-form-field appearance="outline">
-            <mat-label>Value</mat-label>
-
-            <input matInput type="number" [(ngModel)]="value" (keyup.enter)="push()" />
+            <mat-label>Stack Size</mat-label>
+            <input matInput type="number" min="1" [(ngModel)]="stackSize">
         </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="push()">Push</button>
+        <button mat-flat-button color="primary" (click)="createStack()" [disabled]="animation.playing()">
+            Create
+        </button>
 
-        <button mat-raised-button (click)="pop()" [disabled]="!size()">Pop</button>
+        <mat-form-field appearance="outline">
+            <mat-label>Value</mat-label>
+            <input matInput type="number" [(ngModel)]="value">
+        </mat-form-field>
 
-        <button mat-raised-button (click)="peek()" [disabled]="!size()">Peek</button>
+        <button mat-flat-button color="primary" (click)="push()"
+            [disabled]="animation.playing() || isFull() || stack().length===0">
+            Push
+        </button>
 
-        <button mat-raised-button color="warn" (click)="reset()" [disabled]="!size()">Reset</button>
-    </div>
+        <button mat-flat-button (click)="pop()" [disabled]="animation.playing() || isEmpty()">
+            Pop
+        </button>
 
-    <!-- Main -->
+        <button mat-flat-button (click)="peek()" [disabled]="animation.playing() || isEmpty()">
+            Peek
+        </button>
 
-    <div class="workspace">
-        <!-- History -->
+        <button mat-flat-button color="warn" (click)="reset()" [disabled]="animation.playing() || stack().length===0">
+            Reset
+        </button>
 
-        <section class="panel history">
-            <h2>History</h2>
+    </section>
 
-            @if(history().length){ @for(item of history(); track $index){
+    <section class="workspace">
 
-            <div class="history-item">{{item}}</div>
+        <section class="visualizer">
 
-            } }@else{
+            @if(stack().length){
 
-            <div class="empty">No Operations</div>
+            <div class="stack-container">
+
+                <div class="top-label" [style.top.px]="18 + ((stack().length-1-top())*72)">
+                    TOP →
+                </div>
+
+                <div class="stack-box">
+
+                    @for(cell of stack(); track $index){
+
+                    <div class="stack-slot">
+
+                        @if(stack()[stack().length - 1 - $index].value !== null){
+
+                        <div class="stack-card" [class.active]="stack()[stack().length - 1 - $index].active">
+
+                            {{stack()[stack().length - 1 - $index].value}}
+
+                        </div>
+
+                        }
+
+                    </div>
+
+                    }
+                </div>
+
+            </div>
+
+            } @else {
+
+            <div class="empty-state">
+
+                <h2>Create Stack</h2>
+
+                <p>Create a stack to begin visualization.</p>
+
+            </div>
 
             }
+
         </section>
 
-        <!-- Stack -->
+        <aside class="algorithm-panel">
 
-        <section class="stack-section">
-            <div class="top">
-                TOP
+            <app-code-viewer [code]="code()" [activeLine]="animation.activeLine()">
+            </app-code-viewer>
 
-                <div>↓</div>
+            <div class="status-bar">
+
+                <div class="status-item">
+                    <label>Operation</label>
+                    <span>{{operation()}}</span>
+                </div>
+
+                <div class="status-item">
+                    <label>Status</label>
+                    <span>{{status()}}</span>
+                </div>
+
+                <div class="status-item">
+                    <label>Time</label>
+                    <span>{{timeComplexity()}}</span>
+                </div>
+
+                <div class="status-item">
+                    <label>Space</label>
+                    <span>{{spaceComplexity()}}</span>
+                </div>
+
             </div>
 
-            <div class="stack-frame">
-                @for(item of stack().slice().reverse(); track $index){
+        </aside>
 
-                <div class="stack-node">{{item}}</div>
+    </section>
 
-                }
-            </div>
-        </section>
-
-        <!-- Info -->
-
-        <section class="panel">
-            <h2>Information</h2>
-
-            <div class="info-row">
-                <span>Push</span>
-                <strong>O(1)</strong>
-            </div>
-
-            <div class="info-row">
-                <span>Pop</span>
-                <strong>O(1)</strong>
-            </div>
-
-            <div class="info-row">
-                <span>Peek</span>
-                <strong>O(1)</strong>
-            </div>
-
-            <div class="info-row">
-                <span>Search</span>
-                <strong>O(n)</strong>
-            </div>
-        </section>
-    </div>
-
-    <!-- Footer -->
-
-    <div class="note">
-        <strong>LIFO Principle</strong>
-
-        <p>The last element pushed into the stack is always the first element removed.</p>
-    </div>
 </div>
