@@ -1,0 +1,41 @@
+.algorithm-panel{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.algorithm-card{
+  background:linear-gradient(180deg,#121b2d,#101827);
+  border:1px solid var(--av-border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.algorithm-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.algorithm-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.algorithm-title mat-icon{
+  color:#8b5cf6;
+  font-size:20px;
+    width:20px;
+  height:20px;
+}
+
+
+.algorithm-title h3{
+  margin:0;
+  font-size:18px;
+  letter-spacing:.3px;
+  color:var(--av-text);
+}

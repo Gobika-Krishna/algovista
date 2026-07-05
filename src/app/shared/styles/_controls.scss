@@ -1,0 +1,33 @@
+.controls-card{
+  background:linear-gradient(180deg,#121b2d,#101827);
+  border:1px solid var(--av-border);
+  border-radius:18px;
+  padding:18px 22px;
+  margin-bottom:12px;
+}
+
+.controls-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.controls-header h3{
+  margin:0;
+  color:var(--av-text);
+  font-size:20px;
+  font-weight:700;
+}
+
+.controls-header span{
+  color:var(--av-text-secondary);
+  font-size:13px;
+}
+
+.controls{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:wrap;
+}

@@ -2,51 +2,99 @@
 
     <header class="page-header">
 
-        <div class="title-section">
+        <div>
             <h1>Stack (LIFO)</h1>
-            <span>Last In First Out</span>
+            <p>Last In First Out Data Structure</p>
         </div>
 
-        <div class="stack-info">
-            <span>Capacity : {{ stack().length }}</span>
-            <span>Top : {{ top() === -1 ? '-' : top() }}</span>
-            <span>Elements : {{ size() }}</span>
+        <div class="header-actions">
+
+            @if(!isCreated()){
+
+
+            <mat-form-field appearance="outline">
+
+                <mat-label>Stack Size</mat-label>
+
+                <input matInput type="number" min="1" [(ngModel)]="stackSize">
+
+            </mat-form-field>
+
+            <button mat-flat-button class="av-btn btn-primary" (click)="createStack()" [disabled]="animation.playing()">
+
+                <mat-icon>add_circle</mat-icon>
+
+                Create
+
+            </button>
+
+
+            } @else {
+
+            <div class="av-chip av-chip-warning">
+                <span class="label">Capacity :</span>
+                <span class="value">{{stack().length}}</span>
+            </div>
+
+            }
+
+            <button mat-flat-button class="av-btn btn-danger" (click)="reset()"
+                [disabled]="animation.playing() || stack().length===0">
+
+                <mat-icon>restart_alt</mat-icon>
+
+                Reset
+
+            </button>
+
         </div>
 
     </header>
 
-    <section class="controls">
+    <section class="controls-card">
 
-        <mat-form-field appearance="outline">
-            <mat-label>Stack Size</mat-label>
-            <input matInput type="number" min="1" [(ngModel)]="stackSize">
-        </mat-form-field>
+        <div class="controls">
 
-        <button mat-flat-button color="primary" (click)="createStack()" [disabled]="animation.playing()">
-            Create
-        </button>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Value</mat-label>
-            <input matInput type="number" [(ngModel)]="value">
-        </mat-form-field>
 
-        <button mat-flat-button color="primary" (click)="push()"
-            [disabled]="animation.playing() || isFull() || stack().length===0">
-            Push
-        </button>
+            <mat-form-field appearance="outline">
 
-        <button mat-flat-button (click)="pop()" [disabled]="animation.playing() || isEmpty()">
-            Pop
-        </button>
+                <mat-label>Value</mat-label>
 
-        <button mat-flat-button (click)="peek()" [disabled]="animation.playing() || isEmpty()">
-            Peek
-        </button>
+                <input matInput type="number" [(ngModel)]="value">
 
-        <button mat-flat-button color="warn" (click)="reset()" [disabled]="animation.playing() || stack().length===0">
-            Reset
-        </button>
+            </mat-form-field>
+
+            <button mat-flat-button class="av-btn btn-primary" (click)="push()"
+                [disabled]="animation.playing() || isFull() || stack().length===0">
+
+                <mat-icon>arrow_upward</mat-icon>
+
+                Push
+
+            </button>
+
+            <button mat-flat-button class="av-btn btn-purple" (click)="pop()"
+                [disabled]="animation.playing() || isEmpty()">
+
+                <mat-icon>arrow_downward</mat-icon>
+
+                Pop
+
+            </button>
+
+            <button mat-flat-button class="av-btn btn-success" (click)="peek()"
+                [disabled]="animation.playing() || isEmpty()">
+
+                <mat-icon>visibility</mat-icon>
+
+                Peek
+
+            </button>
+
+
+
+        </div>
 
     </section>
 
@@ -89,8 +137,6 @@
 
             <div class="empty-state">
 
-                <h2>Create Stack</h2>
-
                 <p>Create a stack to begin visualization.</p>
 
             </div>
@@ -99,36 +145,8 @@
 
         </section>
 
-        <aside class="algorithm-panel">
-
-            <app-code-viewer [code]="code()" [activeLine]="animation.activeLine()">
-            </app-code-viewer>
-
-            <div class="status-bar">
-
-                <div class="status-item">
-                    <label>Operation</label>
-                    <span>{{operation()}}</span>
-                </div>
-
-                <div class="status-item">
-                    <label>Status</label>
-                    <span>{{status()}}</span>
-                </div>
-
-                <div class="status-item">
-                    <label>Time</label>
-                    <span>{{timeComplexity()}}</span>
-                </div>
-
-                <div class="status-item">
-                    <label>Space</label>
-                    <span>{{spaceComplexity()}}</span>
-                </div>
-
-            </div>
-
-        </aside>
+        <app-operation-panel [code]="code()" [activeLine]="animation.activeLine()" [execution]="execution()">
+        </app-operation-panel>
 
     </section>
 

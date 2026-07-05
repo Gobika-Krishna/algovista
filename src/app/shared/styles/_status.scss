@@ -1,0 +1,61 @@
+.status-card{
+  background:linear-gradient(180deg,#121b2d,#101827);
+  border:1px solid var(--av-border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.status-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.status-header mat-icon{
+  color:#3b82f6;
+   font-size:20px;
+  width:20px;
+  height:20px
+}
+.status-header h3{
+  margin:0;
+  font-size:18px;
+  letter-spacing:.3px;
+  color:var(--av-text);
+}
+
+.status-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 20px;
+  border-bottom:1px dashed rgba(255,255,255,.05);
+}
+
+.status-item:last-child{
+  border-bottom:none;
+}
+
+.status-item label{
+  font-size:13px;
+  color:#94a3b8;
+}
+
+.status-item span{
+  font-size:14px;
+  color:var(--av-text);
+}
+
+.status-success{
+  color:#22c55e;
+}
+
+.status-error{
+  color:#ef4444;
+}
+
+.status-running{
+  color:#f59e0b;
+}

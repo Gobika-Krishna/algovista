@@ -1,28 +1,67 @@
-<div class="panel">
-    <h3>Operation Details</h3>
+<div class="algorithm-card">
 
-    <div class="row">
+    <div class="algorithm-header">
+
+        <div class="algorithm-title">
+
+            <mat-icon>code</mat-icon>
+
+            <h3>Algorithm</h3>
+
+        </div>
+
+    </div>
+
+    <app-code-viewer [code]="code" [activeLine]="activeLine">
+    </app-code-viewer>
+
+</div>
+
+<div class="status-card">
+
+    <div class="status-header">
+
+        <mat-icon>monitor_heart</mat-icon>
+
+        <h3>Execution</h3>
+
+    </div>
+
+    <div class="status-item">
+
         <label>Operation</label>
-        <span>{{operation}}</span>
+
+        <span>{{execution.operation}}</span>
+
     </div>
 
-    <div class="row">
-        <label>Explanation</label>
-        <span>{{explanation}}</span>
-    </div>
+    <div class="status-item">
 
-    <div class="row">
-        <label>Time</label>
-        <span>{{timeComplexity}}</span>
-    </div>
-
-    <div class="row">
-        <label>Space</label>
-        <span>{{spaceComplexity}}</span>
-    </div>
-
-    <div class="row">
         <label>Status</label>
-        <span>{{status}}</span>
+
+        <span [class.status-success]="execution.status==='Completed'"
+            [class.status-error]="execution.status.includes('Overflow') || execution.status.includes('Underflow')">
+
+            {{execution.status}}
+
+        </span>
+
     </div>
+
+    <div class="status-item">
+
+        <label>Time Complexity</label>
+
+        <span>{{execution.timeComplexity}}</span>
+
+    </div>
+
+    <div class="status-item">
+
+        <label>Space Complexity</label>
+
+        <span>{{execution.spaceComplexity}}</span>
+
+    </div>
+
 </div>

@@ -1,0 +1,38 @@
+.av-btn{
+  height:40px !important;
+  min-width:110px;
+  border-radius:12px !important;
+  color:white !important;
+  font-size:15px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.25s;
+}
+
+.av-btn:hover{
+  transform:translateY(-2px);
+}
+
+.av-btn:disabled{
+  opacity:.45;
+  transform:none;
+}
+
+.btn-primary{
+  background:var(--av-primary) !important;
+}
+
+.btn-success{
+  background:var(--av-success) !important;
+}
+
+.btn-danger{
+  background:var(--av-danger) !important;
+}
+
+.btn-purple{
+  background:var(--av-purple) !important;
+}

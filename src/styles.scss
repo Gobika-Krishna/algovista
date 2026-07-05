@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-
+@use './app/shared/styles/styles';
 html {
   @include mat.theme((
     color: (

@@ -6,8 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 
 import { CodeViewer } from '../../shared/components/code-viewer/code-viewer';
 import { AnimationEngineService } from '../../shared/services/animation-engine';
-import { MatIcon } from '@angular/material/icon';
-
+import { MatIconModule } from '@angular/material/icon';
+import { OperationStatus } from '../../shared/models/operation-status';
+import { OperationPanel } from '../../shared/components/operation-panel/operation-panel';
 interface StackCell {
   value: number | null;
   active: boolean;
@@ -21,8 +22,8 @@ interface StackCell {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    CodeViewer,
-    MatIcon
+    OperationPanel,
+    MatIconModule
   ],
   templateUrl: './stack.html',
   styleUrl: './stack.scss'
@@ -36,13 +37,15 @@ export class Stack {
 
   stack = signal<StackCell[]>([]);
   top = signal(-1);
-
-  operation = signal('');
-  status = signal('');
-  timeComplexity = signal('');
-  spaceComplexity = signal('');
+  execution = signal<OperationStatus>({
+    operation: '',
+    status: '',
+    timeComplexity: '',
+    spaceComplexity: ''
+  });
 
   readonly size = computed(() => this.top() + 1);
+  readonly isCreated = computed(() => this.stack().length > 0);
 
   readonly algorithms = {
     create: [
@@ -91,10 +94,12 @@ export class Stack {
 
     this.code.set(this.algorithms.create);
 
-    this.operation.set('Create Stack');
-    this.status.set('Ready');
-    this.timeComplexity.set(`O(${this.stackSize})`);
-    this.spaceComplexity.set(`O(${this.stackSize})`);
+    this.updateExecution(
+      'Create Stack',
+      'Ready',
+      `O(${this.stackSize})`,
+      `O(${this.stackSize})`
+    );
   }
 
   async push() {
@@ -105,10 +110,12 @@ export class Stack {
 
     if (this.isFull()) {
       this.code.set(this.algorithms.push);
-      this.operation.set('Push');
-      this.status.set('Stack Overflow');
-      this.timeComplexity.set('O(1)');
-      this.spaceComplexity.set('O(1)');
+      this.updateExecution(
+        'Push',
+        'Stack Overflow',
+        'O(1)',
+        'O(1)'
+      );
       return;
     }
 
@@ -116,9 +123,12 @@ export class Stack {
 
     this.code.set(this.algorithms.push);
 
-    this.operation.set(`Push (${this.value})`);
-    this.timeComplexity.set('O(1)');
-    this.spaceComplexity.set('O(1)');
+    this.updateExecution(
+      `Push (${this.value})`,
+      'Running',
+      'O(1)',
+      'O(1)'
+    );
 
     const value = this.value;
 
@@ -153,7 +163,12 @@ export class Stack {
       }
     ]);
 
-    this.status.set('Completed');
+    this.updateExecution(
+      `Push (${value})`,
+      'Completed',
+      'O(1)',
+      'O(1)'
+    );
 
     this.value = null;
 
@@ -163,10 +178,12 @@ export class Stack {
 
     if (this.isEmpty()) {
       this.code.set(this.algorithms.pop);
-      this.operation.set('Pop');
-      this.status.set('Stack Underflow');
-      this.timeComplexity.set('O(1)');
-      this.spaceComplexity.set('O(1)');
+      this.updateExecution(
+        'Pop',
+        'Stack Underflow',
+        'O(1)',
+        'O(1)'
+      );
       return;
     }
 
@@ -174,9 +191,12 @@ export class Stack {
 
     this.code.set(this.algorithms.pop);
 
-    this.operation.set('Pop');
-    this.timeComplexity.set('O(1)');
-    this.spaceComplexity.set('O(1)');
+    this.updateExecution(
+      'Pop',
+      'Running',
+      'O(1)',
+      'O(1)'
+    );
 
     await this.animation.play([
       {
@@ -209,7 +229,12 @@ export class Stack {
       }
     ]);
 
-    this.status.set('Completed');
+    this.updateExecution(
+      'Pop',
+      'Completed',
+      'O(1)',
+      'O(1)'
+    );
 
   }
 
@@ -217,10 +242,12 @@ export class Stack {
 
     if (this.isEmpty()) {
       this.code.set(this.algorithms.peek);
-      this.operation.set('Peek');
-      this.status.set('Stack Empty');
-      this.timeComplexity.set('O(1)');
-      this.spaceComplexity.set('O(1)');
+      this.updateExecution(
+        'Peek',
+        'Stack Empty',
+        'O(1)',
+        'O(1)'
+      );
       return;
     }
 
@@ -236,9 +263,12 @@ export class Stack {
 
     this.code.set(this.algorithms.peek);
 
-    this.operation.set('Peek');
-    this.timeComplexity.set('O(1)');
-    this.spaceComplexity.set('O(1)');
+    this.updateExecution(
+      'Peek',
+      'Running',
+      'O(1)',
+      'O(1)'
+    );
 
     await this.animation.play([
       {
@@ -251,7 +281,12 @@ export class Stack {
       }
     ]);
 
-    this.status.set(`Top = ${updated[currentTop].value}`);
+    this.updateExecution(
+      'Peek',
+      `Top = ${updated[currentTop].value}`,
+      'O(1)',
+      'O(1)'
+    );
 
   }
 
@@ -265,13 +300,12 @@ export class Stack {
 
     this.code.set(this.algorithms.create);
 
-    this.operation.set('Reset');
-
-    this.status.set('Stack Cleared');
-
-    this.timeComplexity.set('');
-
-    this.spaceComplexity.set('');
+    this.updateExecution(
+      'Reset',
+      'Stack Cleared',
+      '',
+      ''
+    );
 
     this.animation.activeLine.set(-1);
 
@@ -291,5 +325,21 @@ export class Stack {
 
   isEmpty(): boolean {
     return this.top() === -1;
+  }
+
+  private updateExecution(
+    operation: string,
+    status: string,
+    time: string,
+    space: string
+  ) {
+
+    this.execution.set({
+      operation,
+      status,
+      timeComplexity: time,
+      spaceComplexity: space
+    });
+
   }
 }
