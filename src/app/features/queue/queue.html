@@ -1,158 +1,169 @@
 <div class="queue-page">
 
-    <!-- Header -->
-
-    <div class="page-header">
+    <header class="page-header">
 
         <div>
+
             <h1>Queue (FIFO)</h1>
+
             <p>First In First Out Data Structure</p>
+
         </div>
 
-        <div class="queue-info">
-            <span>Size : {{ size() }}</span>
-            <span>Front : {{ front() ?? '-' }}</span>
-            <span>Rear : {{ rear() ?? '-' }}</span>
+        <div class="header-actions">
+
+            @if(!isCreated()){
+
+
+
+            <mat-form-field appearance="outline">
+
+                <mat-label>Queue Size</mat-label>
+
+                <input matInput type="number" min="1" [(ngModel)]="queueSize">
+
+            </mat-form-field>
+
+            <button mat-flat-button class="av-btn btn-primary" (click)="createQueue()" [disabled]="animation.playing()">
+
+                <mat-icon>add_circle</mat-icon>
+
+                Create Queue
+
+            </button>
+
+
+            } @else {
+
+            <div class="info-chip">
+
+                <div class="av-chip av-chip-warning">
+                    <span class="label">Capacity :</span>
+                    <span class="value">{{queue().length}}</span>
+                </div>
+
+            </div>
+
+            <button mat-flat-button class="av-btn btn-danger" (click)="reset()" [disabled]="animation.playing()">
+
+                <mat-icon>restart_alt</mat-icon>
+
+                Reset
+
+            </button>
+
+            }
+
         </div>
 
-    </div>
+    </header>
 
-    <!-- Controls -->
+    <section class="controls-card">
 
-    <div class="controls">
+        <div class="controls">
 
-        <mat-form-field appearance="outline">
-            <mat-label>Enter Value</mat-label>
+            <mat-form-field appearance="outline">
 
-            <input matInput type="number" [(ngModel)]="value" (keyup.enter)="enqueue()">
-        </mat-form-field>
+                <mat-label>Value</mat-label>
 
-        <button mat-raised-button color="primary" (click)="enqueue()" [disabled]="isFull()">
+                <input matInput type="number" [(ngModel)]="value">
 
-            Enqueue
+            </mat-form-field>
 
-        </button>
+            <button mat-flat-button class="av-btn btn-primary" (click)="enqueue()"
+                [disabled]="animation.playing() || isFull() || !isCreated()">
 
-        <button mat-raised-button (click)="dequeue()" [disabled]="isEmpty()">
+                <mat-icon>east</mat-icon>
 
-            Dequeue
+                Enqueue
 
-        </button>
+            </button>
 
-        <button mat-raised-button (click)="peekFront()" [disabled]="isEmpty()">
+            <button mat-flat-button class="av-btn btn-purple" (click)="dequeue()"
+                [disabled]="animation.playing() || isEmpty()">
 
-            Front
+                <mat-icon>west</mat-icon>
 
-        </button>
+                Dequeue
 
-        <button mat-raised-button (click)="peekRear()" [disabled]="isEmpty()">
+            </button>
 
-            Rear
+            <button mat-flat-button class="av-btn btn-success" (click)="frontElement()"
+                [disabled]="animation.playing() || isEmpty()">
 
-        </button>
+                <mat-icon>visibility</mat-icon>
 
-        <button mat-raised-button color="warn" (click)="reset()">
+                Front
 
-            Reset
+            </button>
 
-        </button>
+        </div>
 
-    </div>
+    </section>
 
-    <!-- Workspace -->
-
-    <div class="workspace">
-
-        <!-- Queue -->
+    <section class="workspace">
 
         <section class="visualizer">
 
-            <div class="queue-labels">
+            @if(isCreated()){
 
-                <span>FRONT</span>
+            <div class="queue-container">
 
-                <span>REAR</span>
+                <div class="front-pointer" [style.left.px]="front() * 92+40">
 
-            </div>
+                    <span>FRONT</span>
 
-            <div class="queue-box">
-
-                @for(item of queue(); track $index){
-
-                <div class="queue-item">
-
-                    {{item}}
+                    <mat-icon>arrow_drop_down</mat-icon>
 
                 </div>
 
-                }
+                <div class="queue-box">
 
-                @for(slot of [].constructor(CAPACITY - size()); track $index){
+                    @for(cell of queue(); track $index){
 
-                <div class="queue-slot"></div>
+                    <div class="queue-slot">
 
-                }
+                        @if(cell.value !== null){
+
+                        <div class="queue-card" [class.active]="cell.active">
+
+                            {{cell.value}}
+
+                        </div>
+
+                        }
+
+                    </div>
+
+                    }
+
+                </div>
+
+                <div class="rear-pointer" [style.left.px]="rear() * 92 +40">
+
+                    <mat-icon>arrow_drop_up</mat-icon>
+
+                    <span>REAR</span>
+
+                </div>
 
             </div>
+
+            } @else {
+
+            <div class="empty-state">
+
+                <p>Create a queue to begin visualization.</p>
+
+            </div>
+
+            }
 
         </section>
 
-        <!-- Side Panel -->
+        <app-operation-panel [code]="code()" [activeLine]="animation.activeLine()" [execution]="execution()">
+        </app-operation-panel>
 
-        <aside class="side-panel">
-
-            <div class="panel">
-
-                <h3>History</h3>
-
-                @if(history().length){
-
-                @for(item of history(); track $index){
-
-                <div class="history-item">
-
-                    {{item}}
-
-                </div>
-
-                }
-
-                } @else {
-
-                <p>No Operations</p>
-
-                }
-
-            </div>
-
-            <div class="panel">
-
-                <h3>Complexity</h3>
-
-                <div class="complexity">
-                    <span>Enqueue</span>
-                    <strong>O(1)</strong>
-                </div>
-
-                <div class="complexity">
-                    <span>Dequeue</span>
-                    <strong>O(1)</strong>
-                </div>
-
-                <div class="complexity">
-                    <span>Front</span>
-                    <strong>O(1)</strong>
-                </div>
-
-                <div class="complexity">
-                    <span>Rear</span>
-                    <strong>O(1)</strong>
-                </div>
-
-            </div>
-
-        </aside>
-
-    </div>
+    </section>
 
 </div>

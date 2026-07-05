@@ -33,3 +33,10 @@ span{
   text-align:right;
   word-break:break-word;
 }
+
+.status-card{
+  margin-top:  10px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+}

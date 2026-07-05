@@ -1,104 +1,385 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+
+import { AnimationEngineService } from '../../shared/services/animation-engine';
+import { OperationPanel } from '../../shared/components/operation-panel/operation-panel';
+import { OperationStatus } from '../../shared/models/operation-status';
+import { QUEUE_ALGORITHMS } from '../../shared/constants/queue-algorithms';
+
+interface QueueCell {
+  value: number | null;
+  active: boolean;
+}
 
 @Component({
   selector: 'app-queue',
   standalone: true,
   imports: [
     FormsModule,
-    NgClass,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule,
+    OperationPanel
   ],
   templateUrl: './queue.html',
   styleUrl: './queue.scss'
 })
 export class Queue {
 
+  constructor(public animation: AnimationEngineService) { }
+
+  queueSize = 5;
+
   value: number | null = null;
 
-  readonly CAPACITY = 6;
+  queue = signal<QueueCell[]>([]);
 
-  readonly MAX_HISTORY = 8;
+  front = signal(-1);
 
-  queue = signal<number[]>([]);
+  rear = signal(-1);
 
-  history = signal<string[]>([]);
+  execution = signal<OperationStatus>({
+    operation: '',
+    status: '',
+    timeComplexity: '',
+    spaceComplexity: ''
+  });
 
-  front = computed(() =>
-    this.queue().length ? this.queue()[0] : null
-  );
+  code = signal<string[]>(QUEUE_ALGORITHMS.create);
 
-  rear = computed(() =>
-    this.queue().length
-      ? this.queue()[this.queue().length - 1]
-      : null
-  );
+  readonly size = computed(() => {
+    if (this.isEmpty()) {
+      return 0;
+    }
 
-  size = computed(() => this.queue().length);
+    return this.rear() - this.front() + 1;
+  });
 
-  isEmpty = computed(() => this.size() === 0);
+  readonly isCreated = computed(() => {
+    return this.queue().length > 0;
+  });
 
-  isFull = computed(() => this.size() === this.CAPACITY);
+  async createQueue() {
 
-  enqueue() {
+    const cells: QueueCell[] = [];
 
-    if (this.value == null) return;
+    for (let i = 0; i < this.queueSize; i++) {
 
-    if (this.isFull()) {
-      this.addHistory('Queue Overflow');
+      cells.push({
+        value: null,
+        active: false
+      });
+
+    }
+
+    this.code.set(QUEUE_ALGORITHMS.create);
+
+    this.updateExecution(
+      'Create Queue',
+      'Running',
+      `O(${this.queueSize})`,
+      `O(${this.queueSize})`
+    );
+
+    await this.animation.play([
+      {
+        line: 0,
+        message: 'Allocating Queue'
+      },
+      {
+        line: 1,
+        message: 'Initializing Queue'
+      },
+      {
+        line: 2,
+        message: 'Setting Front & Rear',
+        callback: () => {
+
+          this.queue.set(cells);
+
+          this.front.set(-1);
+
+          this.rear.set(-1);
+
+        }
+      },
+      {
+        line: 3,
+        message: 'Queue Ready'
+      }
+    ]);
+
+    this.updateExecution(
+      'Create Queue',
+      'Completed',
+      `O(${this.queueSize})`,
+      `O(${this.queueSize})`
+    );
+
+  }
+
+  private clearActive() {
+
+    const updated = [...this.queue()];
+
+    updated.forEach(cell => cell.active = false);
+
+    this.queue.set(updated);
+
+  }
+
+  isFull(): boolean {
+
+    return this.rear() === this.queue().length - 1;
+
+  }
+
+  isEmpty(): boolean {
+
+    return this.front() === -1;
+
+  }
+
+  private updateExecution(
+    operation: string,
+    status: string,
+    time: string,
+    space: string
+  ) {
+
+    this.execution.set({
+      operation,
+      status,
+      timeComplexity: time,
+      spaceComplexity: space
+    });
+
+  }
+
+  async enqueue() {
+
+    if (this.value == null || !this.isCreated()) {
       return;
     }
 
-    this.queue.update(q => [...q, this.value!]);
+    if (this.isFull()) {
 
-    this.addHistory(`Enqueue(${this.value})`);
+      this.code.set(QUEUE_ALGORITHMS.enqueue);
+
+      this.updateExecution(
+        'Enqueue',
+        'Queue Overflow',
+        'O(1)',
+        'O(1)'
+      );
+
+      return;
+
+    }
+
+    this.clearActive();
+
+    this.code.set(QUEUE_ALGORITHMS.enqueue);
+
+    this.updateExecution(
+      `Enqueue (${this.value})`,
+      'Running',
+      'O(1)',
+      'O(1)'
+    );
+
+    const value = this.value;
+
+    await this.animation.play([
+      {
+        line: 0,
+        message: 'Starting Enqueue'
+      },
+      {
+        line: 1,
+        message: 'Checking Overflow'
+      },
+      {
+        line: 2,
+        message: 'Initializing FRONT',
+        callback: () => {
+
+          if (this.front() === -1) {
+            this.front.set(0);
+          }
+
+        }
+      },
+      {
+        line: 3,
+        message: 'Moving REAR'
+      },
+      {
+        line: 4,
+        message: 'Inserting Value',
+        callback: () => {
+
+          const nextRear = this.rear() + 1;
+
+          const updated = [...this.queue()];
+
+          updated[nextRear] = {
+            value,
+            active: true
+          };
+
+          this.queue.set(updated);
+
+          this.rear.set(nextRear);
+
+        }
+      }
+    ]);
+
+    this.updateExecution(
+      `Enqueue (${value})`,
+      'Completed',
+      'O(1)',
+      'O(1)'
+    );
 
     this.value = null;
 
   }
 
-  dequeue() {
+  async dequeue() {
 
     if (this.isEmpty()) {
 
-      this.addHistory('Queue Underflow');
+      this.code.set(QUEUE_ALGORITHMS.dequeue);
+
+      this.updateExecution(
+        'Dequeue',
+        'Queue Underflow',
+        'O(1)',
+        'O(1)'
+      );
 
       return;
 
     }
 
-    const removed = this.queue()[0];
+    this.clearActive();
 
-    this.queue.update(q => q.slice(1));
+    this.code.set(QUEUE_ALGORITHMS.dequeue);
 
-    this.addHistory(`Dequeue() → ${removed}`);
+    this.updateExecution(
+      'Dequeue',
+      'Running',
+      'O(1)',
+      'O(1)'
+    );
+
+    await this.animation.play([
+      {
+        line: 0,
+        message: 'Starting Dequeue'
+      },
+      {
+        line: 1,
+        message: 'Checking Underflow'
+      },
+      {
+        line: 2,
+        message: 'Removing Front Element',
+        callback: () => {
+
+          const currentFront = this.front();
+
+          const updated = [...this.queue()];
+
+          updated[currentFront] = {
+            value: null,
+            active: false
+          };
+
+          this.queue.set(updated);
+
+          if (currentFront === this.rear()) {
+
+            this.front.set(-1);
+            this.rear.set(-1);
+
+          } else {
+
+            this.front.set(currentFront + 1);
+
+          }
+
+        }
+      }
+    ]);
+
+    this.updateExecution(
+      'Dequeue',
+      'Completed',
+      'O(1)',
+      'O(1)'
+    );
 
   }
 
-  peekFront() {
+  async frontElement() {
 
-    if (!this.isEmpty()) {
+    if (this.isEmpty()) {
 
-      this.addHistory(`Front → ${this.front()}`);
+      this.code.set(QUEUE_ALGORITHMS.front);
+
+      this.updateExecution(
+        'Front',
+        'Queue Empty',
+        'O(1)',
+        'O(1)'
+      );
+
+      return;
 
     }
 
-  }
+    this.clearActive();
 
-  peekRear() {
+    const updated = [...this.queue()];
 
-    if (!this.isEmpty()) {
+    updated[this.front()].active = true;
 
-      this.addHistory(`Rear → ${this.rear()}`);
+    this.queue.set(updated);
 
-    }
+    this.code.set(QUEUE_ALGORITHMS.front);
+
+    this.updateExecution(
+      'Front',
+      'Running',
+      'O(1)',
+      'O(1)'
+    );
+
+    await this.animation.play([
+      {
+        line: 0,
+        message: 'Reading Front Element'
+      },
+      {
+        line: 1,
+        message: `Front = ${updated[this.front()].value}`
+      }
+    ]);
+
+    this.updateExecution(
+      'Front',
+      `Front = ${updated[this.front()].value}`,
+      'O(1)',
+      'O(1)'
+    );
 
   }
 
@@ -106,19 +387,22 @@ export class Queue {
 
     this.queue.set([]);
 
-    this.history.set([]);
+    this.front.set(-1);
 
-  }
+    this.rear.set(-1);
 
-  private addHistory(message: string) {
+    this.value = null;
 
-    this.history.update(history => [
+    this.code.set(QUEUE_ALGORITHMS.create);
 
-      message,
+    this.updateExecution(
+      'Reset',
+      'Queue Cleared',
+      '',
+      ''
+    );
 
-      ...history
-
-    ].slice(0, this.MAX_HISTORY));
+    this.animation.activeLine.set(-1);
 
   }
 

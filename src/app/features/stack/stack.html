@@ -24,7 +24,7 @@
 
                 <mat-icon>add_circle</mat-icon>
 
-                Create
+                Create Stack
 
             </button>
 
@@ -36,16 +36,17 @@
                 <span class="value">{{stack().length}}</span>
             </div>
 
-            }
-
-            <button mat-flat-button class="av-btn btn-danger" (click)="reset()"
-                [disabled]="animation.playing() || stack().length===0">
+            <button mat-flat-button class="av-btn btn-danger" (click)="reset()" [disabled]="animation.playing()">
 
                 <mat-icon>restart_alt</mat-icon>
 
                 Reset
 
             </button>
+
+            }
+
+
 
         </div>
 
