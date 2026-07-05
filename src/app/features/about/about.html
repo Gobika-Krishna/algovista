@@ -1,0 +1,36 @@
+<div class="about-container">
+    <mat-card class="hero-card">
+        <div class="hero-content">
+            <div class="avatar-section">
+                <div class="avatar">
+                    <mat-icon>person</mat-icon>
+                </div>
+            </div>
+            <div class="intro-section">
+                <h1>Gobika</h1>
+                <h2>Senior Front-End Engineer</h2>
+                <p class="experience">
+                    9+ Years of Enterprise Application Development
+                </p>
+                <mat-chip-set>
+                    <mat-chip>Angular</mat-chip>
+                    <mat-chip>TypeScript</mat-chip>
+                    <mat-chip>SAP Spartacus</mat-chip>
+                    <mat-chip>SQL</mat-chip>
+                    <mat-chip>RxJS</mat-chip>
+                    <mat-chip>AWS</mat-chip>
+                </mat-chip-set>
+                <div class="action-buttons">
+                    <button mat-flat-button color="primary" (click)="openLink(githubUrl)">
+                        <mat-icon>code</mat-icon>
+                        GitHub
+                    </button>
+                    <button mat-stroked-button (click)="openLink(linkedinUrl)">
+                        <mat-icon>work</mat-icon>
+                        LinkedIn
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>

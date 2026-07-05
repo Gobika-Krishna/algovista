@@ -44,6 +44,12 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/trees/binary-search-tree/binary-search-tree')
                         .then(m => m.BinarySearchTree)
+            },
+            {
+                path: 'about',
+                loadComponent: () =>
+                    import('./features/about/about')
+                        .then(m => m.About)
             }
         ],
     },
