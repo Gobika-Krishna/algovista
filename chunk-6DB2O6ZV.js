@@ -1,1 +1,0 @@
-import{Kb as a,Ya as o,qb as n,rb as m}from"./chunk-UJTC72VL.js";var i=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-home"]],decls:2,vars:0,template:function(e,c){e&1&&(n(0,"h1"),a(1,"Welcome to AlgoVista \u{1F680}"),m())},encapsulation:2})};export{i as Home};
