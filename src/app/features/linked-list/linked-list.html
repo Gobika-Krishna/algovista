@@ -1,106 +1,161 @@
 <div class="linked-list-page">
 
-    <!-- Header -->
-    <div class="page-header">
+    <header class="page-header">
 
         <div>
+
             <h1>Linked List</h1>
-            <p>Singly Linked List Visualization</p>
+
+            <p>Singly Linked List</p>
+
         </div>
 
-        <div class="list-info">
-            <span>Size : {{ size() }}</span>
-            <span>Head : {{ head() }}</span>
-            <span>Tail : {{ tail() }}</span>
-        </div>
+        <div class="header-actions">
 
-    </div>
+            <div class="info-chip">
 
-    <!-- Controls -->
-
-    <div class="controls">
-
-        <mat-form-field appearance="outline">
-
-            <mat-label>Value</mat-label>
-
-            <input matInput type="number" [(ngModel)]="value" (keyup.enter)="insertTail()">
-
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" (click)="insertHead()">
-
-            Insert Head
-
-        </button>
-
-        <button mat-raised-button color="primary" (click)="insertTail()">
-
-            Insert Tail
-
-        </button>
-
-        <button mat-raised-button (click)="deleteHead()" [disabled]="size()===0">
-
-            Delete Head
-
-        </button>
-
-        <button mat-raised-button (click)="deleteTail()" [disabled]="size()===0">
-
-            Delete Tail
-
-        </button>
-
-        <button mat-raised-button color="warn" (click)="reset()">
-
-            Reset
-
-        </button>
-
-    </div>
-
-    <!-- Workspace -->
-
-    <div class="workspace">
-
-        <!-- Visualization -->
-
-        <section class="visualizer">
-
-            <div class="head-label">
-
-                HEAD
+                <div class="av-chip av-chip-warning">
+                    <span class="label">Nodes :</span>
+                    <span class="value">{{count()}}</span>
+                </div>
 
             </div>
 
-            <div class="linked-list-container">
+            <button mat-flat-button class="av-btn btn-danger" (click)="reset()" [disabled]="animation.playing()">
 
-                @if(nodes().length){
+                <mat-icon>restart_alt</mat-icon>
 
-                @for(node of nodes(); track node.id){
+                Reset
 
-                <div class="node-wrapper">
+            </button>
 
-                    <div class="node">
+        </div>
 
-                        {{node.value}}
+    </header>
 
-                    </div>
+    <section class="controls-card">
 
-                    @if(!$last){
+        <div class="controls">
 
-                    <div class="arrow">
+            <mat-form-field appearance="outline">
 
-                        →
+                <mat-label>Insert Value</mat-label>
 
-                    </div>
+                <input matInput type="number" [(ngModel)]="insertValue">
 
-                    } @else {
+            </mat-form-field>
 
-                    <div class="null-node">
+            <button mat-flat-button class="av-btn btn-primary" (click)="insertFront()" [disabled]="animation.playing()">
 
-                        NULL
+                <mat-icon>first_page</mat-icon>
+
+                Insert Front
+
+            </button>
+
+            <button mat-flat-button class="av-btn btn-primary" (click)="insertEnd()" [disabled]="animation.playing()">
+
+                <mat-icon>last_page</mat-icon>
+
+                Insert End
+
+            </button>
+
+            <button mat-flat-button class="av-btn btn-purple" (click)="deleteFront()"
+                [disabled]="animation.playing() || isEmpty()">
+
+                <mat-icon>keyboard_double_arrow_left</mat-icon>
+
+                Delete Front
+
+            </button>
+
+            <button mat-flat-button class="av-btn btn-purple" (click)="deleteEnd()"
+                [disabled]="animation.playing() || isEmpty()">
+
+                <mat-icon>keyboard_double_arrow_right</mat-icon>
+
+                Delete End
+
+            </button>
+
+            <mat-form-field appearance="outline">
+
+                <mat-label>Search Value</mat-label>
+
+                <input matInput type="number" [(ngModel)]="searchValue">
+
+            </mat-form-field>
+
+            <button mat-flat-button class="av-btn btn-success" (click)="search()"
+                [disabled]="animation.playing() || isEmpty()">
+
+                <mat-icon>search</mat-icon>
+
+                Search
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <section class="workspace">
+
+        <section class="visualizer">
+
+            @if(count()) {
+
+            <div class="list-container">
+
+                <div class="head-pointer">
+
+                    HEAD
+
+                    <mat-icon>
+
+                        south
+
+                    </mat-icon>
+
+                </div>
+
+                <div class="list-row">
+
+                    @for(node of nodes(); track $index) {
+
+                    <div class="node-wrapper">
+
+                        <div class="list-node" [class.active]="node.active" [class.current]="node.current"
+                            [class.visited]="node.visited" [class.found]="node.found">
+
+                            <div class="node-data">
+
+                                {{node.value}}
+
+                            </div>
+
+                            <div class="node-pointer">
+
+                                ●
+
+                            </div>
+
+                        </div>
+
+                        @if($index !== count() - 1){
+
+                        <div class="next-arrow"></div>
+
+                        } @else {
+
+                        <div class="null-pointer">
+
+                            NULL
+
+                        </div>
+
+                        }
 
                     </div>
 
@@ -108,98 +163,27 @@
 
                 </div>
 
-                }
+            </div>
 
-                } @else {
+            } @else {
 
-                <div class="empty-list">
+            <div class="empty-state">
 
-                    Empty Linked List
+                <p>
 
-                </div>
+                    Insert a value to create the first node.
 
-                }
+                </p>
 
             </div>
+
+            }
 
         </section>
 
-        <!-- Side -->
+        <app-operation-panel [code]="code()" [activeLine]="animation.activeLine()" [execution]="execution()">
+        </app-operation-panel>
 
-        <aside class="side-panel">
-
-            <div class="panel">
-
-                <h3>History</h3>
-
-                @if(history().length){
-
-                @for(item of history(); track $index){
-
-                <div class="history-item">
-
-                    {{item}}
-
-                </div>
-
-                }
-
-                } @else {
-
-                <p>No Operations</p>
-
-                }
-
-            </div>
-
-            <div class="panel">
-
-                <h3>Complexity</h3>
-
-                <div class="complexity">
-
-                    <span>Insert Head</span>
-
-                    <strong>O(1)</strong>
-
-                </div>
-
-                <div class="complexity">
-
-                    <span>Insert Tail</span>
-
-                    <strong>O(n)</strong>
-
-                </div>
-
-                <div class="complexity">
-
-                    <span>Delete Head</span>
-
-                    <strong>O(1)</strong>
-
-                </div>
-
-                <div class="complexity">
-
-                    <span>Delete Tail</span>
-
-                    <strong>O(n)</strong>
-
-                </div>
-
-                <div class="complexity">
-
-                    <span>Search</span>
-
-                    <strong>O(n)</strong>
-
-                </div>
-
-            </div>
-
-        </aside>
-
-    </div>
+    </section>
 
 </div>
