@@ -11,20 +11,17 @@ export const LINKED_LIST_ALGORITHMS = {
     ],
 
     insertEnd: [
-        'insertEnd(value: number): void {',
-        '  const newNode = {',
-        '    value,',
-        '    next: null',
-        '  };',
-        '  if (!this.head) {',
-        '    this.head = newNode;',
-        '    return;',
+        'insertEnd(value: number): void {',   // 1
+        '  const newNode = new ListNode(value);', // 2
+        '  if (!this.head) {',                // 3
+        '    this.head = newNode;',           // 4
+        '    return;',                        // 5
         '  }',
-        '  let current = this.head;',
-        '  while (current.next) {',
-        '    current = current.next;',
+        '  let current = this.head;',         // 7
+        '  while (current.next) {',           // 8
+        '    current = current.next;',        // 9
         '  }',
-        '  current.next = newNode;',
+        '  current.next = newNode;',          // 11
         '}'
     ],
 

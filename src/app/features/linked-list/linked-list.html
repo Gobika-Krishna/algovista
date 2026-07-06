@@ -21,7 +21,7 @@
 
             </div>
 
-            <button mat-flat-button class="av-btn btn-danger" (click)="reset()" [disabled]="animation.playing()">
+            <button mat-flat-button class="av-btn btn-danger" (click)="reset()" [disabled]="execution.state().playing">
 
                 <mat-icon>restart_alt</mat-icon>
 
@@ -45,7 +45,8 @@
 
             </mat-form-field>
 
-            <button mat-flat-button class="av-btn btn-primary" (click)="insertFront()" [disabled]="animation.playing()">
+            <button mat-flat-button class="av-btn btn-primary" (click)="insertFront()"
+                [disabled]="execution.state().playing">
 
                 <mat-icon>first_page</mat-icon>
 
@@ -53,7 +54,8 @@
 
             </button>
 
-            <button mat-flat-button class="av-btn btn-primary" (click)="insertEnd()" [disabled]="animation.playing()">
+            <button mat-flat-button class="av-btn btn-primary" (click)="insertEnd()"
+                [disabled]="execution.state().playing">
 
                 <mat-icon>last_page</mat-icon>
 
@@ -62,7 +64,7 @@
             </button>
 
             <button mat-flat-button class="av-btn btn-purple" (click)="deleteFront()"
-                [disabled]="animation.playing() || isEmpty()">
+                [disabled]="execution.state().playing || isEmpty()">
 
                 <mat-icon>keyboard_double_arrow_left</mat-icon>
 
@@ -71,7 +73,7 @@
             </button>
 
             <button mat-flat-button class="av-btn btn-purple" (click)="deleteEnd()"
-                [disabled]="animation.playing() || isEmpty()">
+                [disabled]="execution.state().playing || isEmpty()">
 
                 <mat-icon>keyboard_double_arrow_right</mat-icon>
 
@@ -88,7 +90,7 @@
             </mat-form-field>
 
             <button mat-flat-button class="av-btn btn-success" (click)="search()"
-                [disabled]="animation.playing() || isEmpty()">
+                [disabled]="execution.state().playing || isEmpty()">
 
                 <mat-icon>search</mat-icon>
 
@@ -148,6 +150,7 @@
                         <div class="next-arrow"></div>
 
                         } @else {
+                        <div class="next-arrow"></div>
 
                         <div class="null-pointer">
 
@@ -181,7 +184,8 @@
 
         </section>
 
-        <app-operation-panel [code]="code()" [activeLine]="animation.activeLine()" [execution]="execution()">
+        <app-operation-panel [code]="code()" [activeLine]="execution.state().activeLine"
+            [execution]="executionStatus()">
         </app-operation-panel>
 
     </section>
