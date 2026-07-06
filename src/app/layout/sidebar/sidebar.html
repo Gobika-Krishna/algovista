@@ -1,158 +1,61 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="collapsed()">
+    <div class="sidebar-header">
 
-    <div class="title">
-        AlgoVista
+        @if (!collapsed()) {
+
+        <div class="brand">
+            <mat-icon>account_tree</mat-icon>
+            <span>AlgoVista</span>
+        </div>
+
+        }
+
+        <button mat-icon-button class="collapse-button" (click)="toggle.emit()">
+
+            <mat-icon>
+                {{ collapsed() ? 'chevron_right' : 'chevron_left' }}
+            </mat-icon>
+
+        </button>
+
     </div>
 
     <mat-divider></mat-divider>
 
-    <mat-nav-list>
-
-        <a mat-list-item routerLink="/home" routerLinkActive="active-link">
-            <mat-icon matListItemIcon>dashboard</mat-icon>
-            <span matListItemTitle>Dashboard</span>
-        </a>
-
-    </mat-nav-list>
-
-    <div class="section-title">
-        Data Structures
-    </div>
-
-    <mat-nav-list>
-
-        <a mat-list-item routerLink="/stack" routerLinkActive="active-link">
-            <mat-icon matListItemIcon>layers</mat-icon>
-            <span matListItemTitle>Stack</span>
-        </a>
-
-        <a mat-list-item routerLink="/queue" routerLinkActive="active-link">
-            <mat-icon matListItemIcon>view_stream</mat-icon>
-            <span matListItemTitle>Queue</span>
-        </a>
-
-        <a mat-list-item routerLink="/linked-list" routerLinkActive="active-link">
-            <mat-icon matListItemIcon>share</mat-icon>
-            <span matListItemTitle>Linked List</span>
-        </a>
-
-    </mat-nav-list>
-
-    <!-- Trees -->
-
-    <mat-expansion-panel #treePanel class="sidebar-panel" hideToggle>
-
-        <mat-expansion-panel-header>
-
-            <mat-panel-title>
-
-                <mat-icon>account_tree</mat-icon>
-
-                <span class="panel-title">Trees</span>
-
-            </mat-panel-title>
-
-            <mat-icon>
-                {{ treePanel.expanded ? 'expand_less' : 'expand_more' }}
+    <nav class="navigation">
+        @for(item of navigation; track item.label) {
+        @if(item.section) {
+        <div class="section-title" [class.hidden]="collapsed()">{{ item.label }}</div>
+        } @else if(hasChildren(item)) {
+        <div class="nav-item" (click)="toggleItem(item)" [matTooltip]="collapsed() ? item.label : ''"
+            matTooltipPosition="right">
+            <div class="nav-left">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span class="label" [class.hidden]="collapsed()">{{ item.label }}</span>
+            </div>
+            <mat-icon class="expand-icon" [class.hidden]="collapsed()">
+                {{ isExpanded(item) ? 'expand_less' : 'expand_more' }}
             </mat-icon>
+        </div>
 
-        </mat-expansion-panel-header>
-
-        <mat-nav-list>
-
-            <a mat-list-item routerLink="/trees/binary-tree" routerLinkActive="active-link">
-                Binary Tree
+        @if(isExpanded(item)) {
+        <div class="children" [class.hidden]="collapsed()">
+            @for(child of item.children; track child.label) {
+            <a class="child-item" [routerLink]="child.route" routerLinkActive="active-link">
+                {{ child.label }}
             </a>
-
-            <a mat-list-item routerLink="/trees/binary-search-tree" routerLinkActive="active-link">
-                Binary Search Tree
-            </a>
-
-            <a mat-list-item routerLink="/trees/avl-tree" routerLinkActive="active-link">
-                AVL Tree
-            </a>
-
-            <a mat-list-item routerLink="/trees/heap" routerLinkActive="active-link">
-                Heap
-            </a>
-
-        </mat-nav-list>
-
-    </mat-expansion-panel>
-
-    <!-- Graphs -->
-
-    <mat-expansion-panel #graphPanel class="sidebar-panel" hideToggle>
-
-        <mat-expansion-panel-header>
-
-            <mat-panel-title>
-
-                <mat-icon>hub</mat-icon>
-
-                <span class="panel-title">Graphs</span>
-
-            </mat-panel-title>
-
-            <mat-icon>
-                {{ graphPanel.expanded ? 'expand_less' : 'expand_more' }}
-            </mat-icon>
-
-        </mat-expansion-panel-header>
-
-        <mat-nav-list>
-
-            <a mat-list-item routerLink="/graphs/bfs" routerLinkActive="active-link">
-
-                Breadth First Search
-
-            </a>
-
-            <a mat-list-item routerLink="/graphs/dfs" routerLinkActive="active-link">
-
-                Depth First Search
-
-            </a>
-
-            <a mat-list-item routerLink="/graphs/dijkstra" routerLinkActive="active-link">
-
-                Dijkstra
-
-            </a>
-
-            <a mat-list-item routerLink="/graphs/prims" routerLinkActive="active-link">
-
-                Prim's Algorithm
-
-            </a>
-
-            <a mat-list-item routerLink="/graphs/kruskals" routerLinkActive="active-link">
-
-                Kruskal's Algorithm
-
-            </a>
-
-        </mat-nav-list>
-
-    </mat-expansion-panel>
-    <mat-divider class="sidebar-divider"></mat-divider>
-
-    <div class="section-title">
-        Developer
-    </div>
-
-    <mat-nav-list>
-
-        <a mat-list-item routerLink="/about" routerLinkActive="active-link">
-
-            <mat-icon matListItemIcon>person</mat-icon>
-
-            <span matListItemTitle>
-                About Me
-            </span>
-
+            }
+        </div>
+        }
+        } @else {
+        <a class="nav-item" [routerLink]="item.route" routerLinkActive="active-link"
+            [matTooltip]="collapsed() ? item.label : ''" matTooltipPosition="right">
+            <div class="nav-left">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span class="label" [class.hidden]="collapsed()">{{ item.label }}</span>
+            </div>
         </a>
-
-    </mat-nav-list>
-
+        }
+        }
+    </nav>
 </div>

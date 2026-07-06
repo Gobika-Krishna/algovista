@@ -1,27 +1,66 @@
-<mat-sidenav-container class="shell-container">
+@if (!mobile()) {
 
-    <mat-sidenav mode="side" opened class="sidebar">
+<div class="desktop-layout" [class.sidebar-collapsed]="sidebarCollapsed()">
 
-        <app-sidebar></app-sidebar>
+  <aside class="desktop-sidebar">
 
-    </mat-sidenav>
+    <app-sidebar [collapsed]="sidebarCollapsed()" (toggle)="toggleDesktopSidebar()">
+    </app-sidebar>
 
-    <mat-sidenav-content>
+  </aside>
 
-        <div class="layout">
+  <section class="desktop-content">
 
-            <!-- <app-navbar></app-navbar> -->
+    <main class="page-content">
 
-            <main class="page-content">
+      <router-outlet></router-outlet>
 
-                <router-outlet></router-outlet>
+    </main>
 
-            </main>
+    <app-footer></app-footer>
 
-            <app-footer></app-footer>
+  </section>
 
-        </div>
+</div>
 
-    </mat-sidenav-content>
+} @else {
+
+<mat-sidenav-container class="mobile-container">
+
+  <mat-sidenav #drawer mode="over" [opened]="drawerOpened()" (closed)="closeDrawer()">
+
+    <app-sidebar></app-sidebar>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <mat-toolbar>
+
+      <button mat-icon-button (click)="drawer.toggle()">
+
+        <mat-icon>menu</mat-icon>
+
+      </button>
+
+      <span class="mobile-title">
+
+        AlgoVista
+
+      </span>
+
+    </mat-toolbar>
+
+    <main class="page-content">
+
+      <router-outlet></router-outlet>
+
+    </main>
+
+    <app-footer></app-footer>
+
+  </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+}
